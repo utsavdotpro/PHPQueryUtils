@@ -3,6 +3,7 @@
 class Query {
   public static function raw($query) {
     $q = mysqli_query($GLOBALS['con'], $query);
+
     if (!is_bool($q)) {
       return mysqli_fetch_array($q);
     } else {
@@ -52,6 +53,7 @@ class Query {
     if ($d = Query::raw($selectQuery)) {
       return (object) $d;
     }
+
     return 0;
   }
 
@@ -64,7 +66,9 @@ class Query {
       $insertQuery .= "`$key`,";
     }
 
-    $insertQuery .= "`created_at`";
+    // * removing last comma
+    $insertQuery = substr_replace($insertQuery, "", -1);
+
     $insertQuery .= ") VALUES (";
 
     foreach ($dataObj as $key => $value) {
@@ -78,7 +82,9 @@ class Query {
       }
     }
 
-    $insertQuery .= "CURRENT_TIMESTAMP";
+    // * removing last comma
+    $insertQuery = substr_replace($insertQuery, "", -1);
+
     $insertQuery .= ")";
 
     if (Query::raw($insertQuery)) {
@@ -95,7 +101,9 @@ class Query {
       $replaceQuery .= "`$key`,";
     }
 
-    $replaceQuery .= "`created_at`";
+    // * removing last comma
+    $replaceQuery = substr_replace($replaceQuery, "", -1);
+
     $replaceQuery .= ") VALUES (";
 
     foreach ($dataObj as $key => $value) {
@@ -109,10 +117,10 @@ class Query {
       }
     }
 
-    $replaceQuery .= "CURRENT_TIMESTAMP";
-    $replaceQuery .= ")";
+    // * removing last comma
+    $replaceQuery = substr_replace($replaceQuery, "", -1);
 
-    // unexpectedTerminate($replaceQuery);
+    $replaceQuery .= ")";
 
     if (Query::raw($replaceQuery)) {
       return mysqli_insert_id($GLOBALS['con']);
@@ -144,7 +152,6 @@ class Query {
       $value .= "";
       if (strlen($value) <= 0) {
         $updateQuery .= "`$key`='',";
-        // } else if ($value[0] == '(' || $value[strlen($value) - 1] == ')') {
       } else if ($value[0] == '(') {
         $updateQuery .= "`$key`=$value,";
       } else {
@@ -152,7 +159,8 @@ class Query {
       }
     }
 
-    $updateQuery = substr_replace($updateQuery, "", -1); //Delete the last comma
+    // * removing last comma
+    $updateQuery = substr_replace($updateQuery, "", -1);
 
     $updateQuery .= " WHERE $where AND $idFilter";
 
@@ -169,6 +177,7 @@ class Query {
     if ($r = Query::rawForResult($query)) {
       $rows = mysqli_num_rows($r);
       $count = 1;
+
       while ($d = mysqli_fetch_array($r)) {
         $d = (object) $d;
 
