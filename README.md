@@ -1,5 +1,5 @@
 # PHPQueryUtils
-Simple <b>Query</b> class to easily and quickly write/execute MySQLi queries. You no more need to write specific queries for every table. Just create a data object pass with your table name through appropriate function and voila, it's done!  
+Simple <b>Query</b> class to easily and quickly write/execute MySQLi queries. You no more need to write specific queries for every table and every operation. Just create a data object pass with your table name through appropriate function and voila, it's done!  
   
 Checkout different operations available:
 
@@ -7,7 +7,7 @@ Checkout different operations available:
 ## raw
 **raw($query)**  
 
-Some queries are just too complex to create objects for, just write it yourself and pass it to the raw() and get the data array (or boolean, if that's the case)
+Some queries are just too complex to create objects for, just write it yourself and pass it to the raw()
 
     Query::raw(
       "SELECT e.*, a.level FROM employees e
@@ -45,26 +45,28 @@ Pass the name of your table and get an data object of first row. Useful when sel
 
 Returns first array from the table where the rows match conditions in whereString.  
 You can directly separate all your conditions with whatever relation you like `AND` or `OR` . Check the example below 
-Comparing rows with id value is one of the most common use case so there's a special filter for it, just pass the id as a third parameter and it will add <i> AND \`id\`='$your_passed id'</i>
+Comparing rows with id value is one of the most common use case so there's a special filter for it, just pass the id as a third parameter and it will add <i> AND \`id\`='$your_passed_id'</i> (see example below)
 
     Query::selectWhere(
       "employees",
-      "`email`='example@email.com' AND `password`='@123'"
+      "`email`='example@email.com' AND `password`='@123'",
+      1
     );
 
-    // query: SELECT * FROM employees WHERE `email`='example@email.com' AND `password`='@123'
+    // query: SELECT * FROM employees WHERE `email`='example@email.com' AND `password`='@123' AND `id`='1'
     // returns: data object
 
 ## insert
 **insert($table, $dataObject, $ignoreMode = false)**  
 
-To add a new row to your table use insert(). First create your data object (as shown in the example) and then just pass it the function.  
+To add a new row to your table use insert(). First create your data object (see example below) and then just pass it to the function.  
 If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ignoreMode using the third parameter.
 
     $data = [
       "first_name" => "Abdul",
       "last_name" => "Kalam",
     ];
+
     Query::insert("users", $data);  
 
     // query: INSERT INTO users (`first_name`, `last_name`) VALUES ('Abdul', 'Kalam')
@@ -103,8 +105,8 @@ Comparing rows with id value is one of the most common use case so there's a spe
 ## updateWhere
 **updateWhere($table, $dataObject, $whereString, $whereIdValue = null)**  
 
-First create a data object and pass it to the update() and the rows from the table where the condition in whereString is matched are updated.  
-You can directly separate all your conditions with whatever relation you like `AND` or `OR` . Check the example below 
+First create a data object and pass it to the updateWhere() and the rows from the table where the condition in whereString is matched are updated.  
+You can directly separate all your conditions with whatever relation you like `AND` or `OR`   
 Comparing rows with id value is one of the most common use case so there's a special filter for it, just pass the id as a third parameter and it will add <i> AND \`id\`='$your_passed id'</i>
 
     $data = [
@@ -124,6 +126,7 @@ Comparing rows with id value is one of the most common use case so there's a spe
 **iterateOnResult($query, $callback = null, $emptyCallback = null)**  
 
 To select multiple rows from a table and doing operations on them use iterateOrResult()  
+Pass whatever SELECT query you like and start working on them in the callback  
 Data objects returned inside the parameter has two extra properties `numRows` (total number of rows available) and `hasNext` (if has more data in the list)   
 To do a different operation when the data is empty, pass a empty callback as third parameter (see example below) 
 
@@ -137,7 +140,7 @@ To do a different operation when the data is empty, pass a empty callback as thi
         // show message like there's no data in the table
       }
     );
-    
+
     // returns: void
 
 ## truncate
@@ -151,10 +154,8 @@ To truncate (remove all rows) from a table, use truncate()
 
 ## Features
 
- - Fully adaptive
+ - Reliable
  - Lightweight
-
-## Links
- - Live example
-   - https://pricelistlite.isolpro.in
-    - https://transactionslistlite.isolpro.in
+ - Easy to use and implement
+ - Great code readability
+ - Highly customizable
