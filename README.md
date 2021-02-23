@@ -169,3 +169,9 @@ To truncate (remove all rows) from a table, use truncate()
  - Easy to use and implement
  - Great code readability
  - Highly customizable
+
+## Contribution
+Want to contribute? Great fork this repo and create a pull request if you
+- found any error
+- want to add a new function
+- upgraded an existing function
