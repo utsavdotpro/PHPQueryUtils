@@ -3,6 +3,17 @@ Simple <b>Query</b> class to easily and quickly write/execute MySQLi queries. Yo
   
 Checkout different operations available:
 
+  - [raw](#raw)
+  - [rawForResult](#rawforresult)
+  - [select](#select)
+  - [selectWhere](#selectwhere)
+  - [insert](#insert)
+  - [replace](#replace)
+  - [delete](#delete)
+  - [updateWhere](#updatewhere)
+  - [iterateOnResult](#iterateonresult)
+  - [truncate](#truncate)
+  - [Features](#features)
 
 ## raw
 **raw($query)**  
