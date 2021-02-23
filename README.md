@@ -1,5 +1,5 @@
 # PHPQueryUtils
-Simple <b>Query</b> class to easily and quickly write/execute MySQLi queries. You no more need to write specific queries for every table and every operation. Just create a data object pass with your table name through appropriate function and voila, it's done!  
+Simple `Query` class to easily and quickly write/execute MySQLi queries. You no more need to write specific queries for every table and every operation. Just create a data object pass with your table name through appropriate function and voila, it's done!  
   
 Checkout different operations available:
 
@@ -15,7 +15,7 @@ Checkout different operations available:
   - [truncate](#truncate): delete all rows from table
 
 ## raw
-**raw($query)**  
+`raw($query)`  
 
 Some queries are just too complex to create objects for, just write it yourself and pass it to the raw()
 
@@ -28,7 +28,7 @@ Some queries are just too complex to create objects for, just write it yourself 
     // returns: boolean or data array
 
 ## rawForResult
-**rawForResult($query)**  
+`rawForResult($query)`  
 
 Not for general use but in case you want the result object instead of data array, rawForResult() is your buddy
 
@@ -41,7 +41,7 @@ Not for general use but in case you want the result object instead of data array
     // returns: boolean or result object
 
 ## select
-**select($tableName)**  
+`select($tableName)`  
 
 Pass the name of your table and get an data object of first row. Useful when selecting from config tables
 
@@ -51,7 +51,7 @@ Pass the name of your table and get an data object of first row. Useful when sel
     // returns: data object
 
 ## selectWhere
-**selectWhere($tableName, $whereString, $whereIdValue = null)**  
+`selectWhere($tableName, $whereString, $whereIdValue = null)`  
 
 Returns first array from the table where the rows match conditions in whereString.  
 You can directly separate all your conditions with whatever relation you like `AND` or `OR` . Check the example below 
@@ -67,7 +67,7 @@ Comparing rows with id value is one of the most common use case so there's a spe
     // returns: data object
 
 ## insert
-**insert($table, $dataObject, $ignoreMode = false)**  
+`insert($table, $dataObject, $ignoreMode = false)`  
 
 To add a new row to your table use insert(). First create your data object (see example below) and then just pass it to the function.  
 If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ignoreMode using the third parameter.
@@ -83,7 +83,7 @@ If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ig
     // returns: boolean or integer (inserted row id)
 
 ## replace
-**replace($table, $dataObject)**  
+`replace($table, $dataObject)`  
 
 To replace existing (or add new) row to your table, use replace()
 
@@ -98,7 +98,7 @@ To replace existing (or add new) row to your table, use replace()
     // returns: boolean or integer (inserted row id)
 
 ## delete
-**delete($table, $whereString, $whereIdValue = null)**  
+`delete($table, $whereString, $whereIdValue = null)`  
 
 Delete the rows from the table where the condition in whereString is matched.  
 You can directly separate all your conditions with whatever relation you like `AND` or `OR` . Check the example below 
@@ -113,7 +113,7 @@ Comparing rows with id value is one of the most common use case so there's a spe
     // returns: boolean
 
 ## updateWhere
-**updateWhere($table, $dataObject, $whereString, $whereIdValue = null)**  
+`updateWhere($table, $dataObject, $whereString, $whereIdValue = null)`  
 
 First create a data object and pass it to the updateWhere() and the rows from the table where the condition in whereString is matched are updated.  
 You can directly separate all your conditions with whatever relation you like `AND` or `OR`   
@@ -133,7 +133,7 @@ Comparing rows with id value is one of the most common use case so there's a spe
     // returns: boolean
 
 ## iterateOnResult
-**iterateOnResult($query, $callback = null, $emptyCallback = null)**  
+`iterateOnResult($query, $callback = null, $emptyCallback = null)`  
 
 To select multiple rows from a table and doing operations on them use iterateOrResult()  
 Pass whatever SELECT query you like and start working on them in the callback  
@@ -154,7 +154,7 @@ To do a different operation when the data is empty, pass a empty callback as thi
     // returns: void
 
 ## truncate
-**truncate($tableName)**  
+`truncate($tableName)`  
 
 To truncate (remove all rows) from a table, use truncate()
 
