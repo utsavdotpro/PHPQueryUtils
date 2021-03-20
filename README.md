@@ -8,6 +8,7 @@ Checkout different operations available:
   - [select](#select): get first row from table as object
   - [selectWhere](#selectwhere): get any row from table as object
   - [insert](#insert): add new row to table
+  - [insertMultiple](#insertMultiple): add new rows to table
   - [replace](#replace): add new or replace existing row in table
   - [delete](#delete): delete any row from table
   - [updateWhere](#updatewhere): update any row in table
