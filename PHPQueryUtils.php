@@ -94,6 +94,56 @@ class Query {
     return 0;
   }
 
+
+
+  public static function insertMultiple($table, $dataArr, $ignoreMode = false, $column = "", $columnId = 0) {
+    if (count($dataArr) <= 0)
+      return;
+
+    $ignore = $ignoreMode ? "IGNORE" : "";
+
+    $insertQuery = "INSERT $ignore INTO `" . $table . "` (";
+
+    foreach ($dataArr[0] as $key => $value) {
+      $insertQuery .= "`$key`,";
+    }
+
+    $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
+
+    $insertQuery .= $column != "" ? "`$column`" : "";
+    $insertQuery .= ") VALUES";
+
+    foreach ($dataArr as $dataObj) {
+      $insertQuery .= " (";
+
+      foreach ($dataObj as $key => $value) {
+        $value .= "";
+        if (strlen($value) <= 0) {
+          $insertQuery .= "'',";
+        } else if ($value[0] == '(' || $value[strlen($value) - 1] == ')') {
+          $insertQuery .= "$value,";
+        } else {
+          $insertQuery .= "'$value',";
+        }
+      }
+
+      $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
+
+      $insertQuery .= $columnId != "" ? "'$columnId'" : "";
+      $insertQuery .= "),";
+    }
+
+    $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
+
+    // sendUnexpectedError($insertQuery);
+
+    if (Query::raw($insertQuery)) {
+      return mysqli_insert_id($GLOBALS['con']);
+    }
+
+    return 0;
+  }
+
   public static function replace($table, $dataObj) {
     $replaceQuery = "REPLACE INTO `" . $table . "` (";
 

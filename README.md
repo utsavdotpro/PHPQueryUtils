@@ -82,6 +82,33 @@ If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ig
     // query: INSERT INTO users (`first_name`, `last_name`) VALUES ('Abdul', 'Kalam')
     // returns: boolean or integer (inserted row id)
 
+## insertMultiple
+`insertMultiple($table, $dataArray, $ignoreMode = false, $column = "", $columnId = 0)`  
+
+To add multiple rows to your table use insertMultiple(). First create your data array (see example below) and then just pass it to the function.  
+If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ignoreMode using the third parameter.  
+This is generally to be used to insert mappings, so if you want to pass the reference column id additionally, you can use the 4th and 5th parameters.
+
+    $data = [
+      [
+        "first_name" => "Abdul",
+        "last_name" => "Kalam",
+      ],
+      [
+        "first_name" => "C.V.",
+        "last_name" => "Raman",
+      ],
+      [
+        "first_name" => "Srinivasa",
+        "last_name" => "Ramanujan",
+      ],
+    ];
+
+    Query::insertMultiple("users", $data);  
+
+    // query: INSERT INTO users (`first_name`, `last_name`) VALUES ('Abdul', 'Kalam'), ('C.V.', 'Raman'), ('Srinivasa', 'Ramanujan)
+    // returns: boolean
+
 ## replace
 `replace($table, $dataObject)`  
 
