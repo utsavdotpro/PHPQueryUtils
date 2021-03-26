@@ -108,9 +108,9 @@ class Query {
       $insertQuery .= "`$key`,";
     }
 
-    $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
+    $insertQuery .= $column != "" ? "`$column,`" : "";
 
-    $insertQuery .= $column != "" ? "`$column`" : "";
+    $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
     $insertQuery .= ") VALUES";
 
     foreach ($dataArr as $dataObj) {
@@ -127,9 +127,9 @@ class Query {
         }
       }
 
-      $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
+      $insertQuery .= $columnId != "" ? "'$columnId'," : "";
 
-      $insertQuery .= $columnId != "" ? "'$columnId'" : "";
+      $insertQuery = substr_replace($insertQuery, "", -1); //Delete the last comma
       $insertQuery .= "),";
     }
 
