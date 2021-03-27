@@ -94,8 +94,6 @@ class Query {
     return 0;
   }
 
-
-
   public static function insertMultiple($table, $dataArr, $ignoreMode = false, $column = "", $columnId = 0) {
     if (count($dataArr) <= 0)
       return;
@@ -218,6 +216,56 @@ class Query {
       if (mysqli_affected_rows($GLOBALS['con']) > 0) {
         return 1;
       }
+    }
+
+    return 0;
+  }
+
+  public static function updateMultiple($table, $dataArr) {
+    if (count($dataArr) <= 0)
+      return;
+
+    $updateQuery = "INSERT INTO `" . $table . "` (";
+
+    foreach ($dataArr[0] as $key => $value) {
+      $updateQuery .= "`$key`,";
+    }
+
+    $updateQuery = substr_replace($updateQuery, "", -1); //Delete the last comma
+    $updateQuery .= ") VALUES";
+
+    foreach ($dataArr as $dataObj) {
+      $updateQuery .= " (";
+
+      foreach ($dataObj as $key => $value) {
+        $value .= "";
+        if (strlen($value) <= 0) {
+          $updateQuery .= "'',";
+        } else if ($value[0] == '(' || $value[strlen($value) - 1] == ')') {
+          $updateQuery .= "$value,";
+        } else {
+          $updateQuery .= "'$value',";
+        }
+      }
+
+      $updateQuery = substr_replace($updateQuery, "", -1); //Delete the last comma
+      $updateQuery .= "),";
+    }
+
+    $updateQuery = substr_replace($updateQuery, "", -1); //Delete the last comma
+
+    $updateQuery .= " ON DUPLICATE KEY UPDATE ";
+
+    foreach ($dataArr[0] as $key => $value) {
+      if ($key == "id") continue;
+
+      $updateQuery .= "$key=VALUES($key),";
+    }
+
+    $updateQuery = substr_replace($updateQuery, "", -1); //Delete the last comma
+
+    if (Query::raw($updateQuery)) {
+      return mysqli_insert_id($GLOBALS['con']);
     }
 
     return 0;
