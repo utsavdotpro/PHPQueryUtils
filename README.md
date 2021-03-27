@@ -12,6 +12,7 @@ Checkout different operations available:
   - [replace](#replace): add new or replace existing row in table
   - [delete](#delete): delete any row from table
   - [updateWhere](#updatewhere): update any row in table
+  - [updateMultiple](#updatemultiple): update multiple rows in the table
   - [iterateOnResult](#iterateonresult): loop on selected rows from table, with empty callback
   - [truncate](#truncate): delete all rows from table
 
@@ -158,6 +159,37 @@ Comparing rows with id value is one of the most common use case so there's a spe
     );
 
     // query: UPDATE users SET `first_name`='Abdul', `last_name`='Kalam' WHERE `email`='example@email.com'
+    // returns: boolean
+
+## updateMultiple
+`updateMultiple($table, $dataArray)`  
+
+To add update multiple rows in your table use updateMultiple(). First create your data array (see example below) and then just pass it to the function.  
+  
+**Note: for this to be able to work, your table must have at least one column with `PRIMARY` OR `UNIQUE` key and you must keep that column in the data array.**
+
+
+    $data = [
+      [
+        "id" => 1, // here id column has PRIMARY key
+        "first_name" => "Abdul",
+        "last_name" => "Kalam",
+      ],
+      [
+        "id" => 2,
+        "first_name" => "C.V.",
+        "last_name" => "Raman",
+      ],
+      [
+        "id" => 3,
+        "first_name" => "Srinivasa",
+        "last_name" => "Ramanujan",
+      ],
+    ];
+
+    Query::insertMultiple("users", $data);  
+
+    // query: INSERT INTO users (`id`, `first_name`, `last_name`) VALUES (1, 'Abdul', 'Kalam'), (2, 'C.V.', 'Raman'), (3, 'Srinivasa', 'Ramanujan) ON DUPLICATE KEY UPDATE id=VALUES(id), first_name=VALUES(first_name), last_name=VALUES(last_name)
     // returns: boolean
 
 ## iterateOnResult
