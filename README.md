@@ -164,7 +164,7 @@ Comparing rows with id value is one of the most common use case so there's a spe
 ## updateMultiple
 `updateMultiple($table, $dataArray)`  
 
-To add update multiple rows in your table use updateMultiple(). First create your data array (see example below) and then just pass it to the function.  
+To update multiple rows in your table use updateMultiple(). First create your data array (see example below) and then just pass it to the function.  
   
 **Note: for this to be able to work, your table must have at least one column with `PRIMARY` OR `UNIQUE` key and you must keep that column in the data array.**
 
@@ -187,10 +187,13 @@ To add update multiple rows in your table use updateMultiple(). First create you
       ],
     ];
 
-    Query::insertMultiple("users", $data);  
+    Query::updateMultiple("users", $data);  
 
     // query: INSERT INTO users (`id`, `first_name`, `last_name`) VALUES (1, 'Abdul', 'Kalam'), (2, 'C.V.', 'Raman'), (3, 'Srinivasa', 'Ramanujan) ON DUPLICATE KEY UPDATE id=VALUES(id), first_name=VALUES(first_name), last_name=VALUES(last_name)
     // returns: boolean
+
+> We're using multi INSERT query here in the UPDATE mode so basically, if a column exists, it will be updated. And if it doesn't exists, it will be created.  
+> So be sure that you only pass the column that already exist in the table until unless you **knowingly** don't want to.
 
 ## iterateOnResult
 `iterateOnResult($query, $callback = null, $emptyCallback = null)`  
