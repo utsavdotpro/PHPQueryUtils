@@ -1,5 +1,9 @@
 # PHPQueryUtils
-Simple `Query` class to easily and quickly write/execute MySQLi queries. You no more need to write specific queries for every table and every operation. Just create a data object pass with your table name through appropriate function and voila, it's done!  
+Simple `Query` class to easily and quickly write/execute MySQLi queries.  
+
+You no more need to write specific queries for every table and every operation. Just create a data object pass with your table name through appropriate function and voila, it's done!  
+
+---
   
 Checkout different operations available:
 
@@ -17,6 +21,8 @@ Checkout different operations available:
   - [truncate](#truncate): delete all rows from table
   - [upsert](#upsert): update or insert row in table
 
+---
+
 ## raw
 `raw($query)`  
 
@@ -29,7 +35,7 @@ Query::raw(
   WHERE e.id=12"
 );
 
-// returns: boolean or data array
+// returns: boolean || data array
 ````
 
 ## rawForResult
@@ -37,13 +43,15 @@ Query::raw(
 
 Not for general use but in case you want the result object instead of data array, rawForResult() is your buddy
 
-    Query::rawForResult(
-      "SELECT e.*, a.level FROM employees e
-      LEFT OUTER JOIN authorization a ON a.emp_id=e.id
-      WHERE e.id=12"
-    );
+````php
+Query::rawForResult(
+  "SELECT e.*, a.level FROM employees e
+  LEFT OUTER JOIN authorization a ON a.emp_id=e.id
+  WHERE e.id=12"
+);
 
-    // returns: boolean or result object
+// returns: boolean or result object
+````
 
 ## select
 `select($tableName)`  
@@ -56,8 +64,11 @@ Query::select("settings");
 // returns: data object
 ````
 
+
 ````sql
-SELECT * FROM settings
+SELECT *
+FROM settings
+WHERE 1=1
 ````
 
 ## selectWhere
@@ -67,14 +78,23 @@ Returns first array from the table where the rows match conditions in whereStrin
 You can directly separate all your conditions with whatever relation you like `AND` or `OR` . Check the example below 
 Comparing rows with id value is one of the most common use case so there's a special filter for it, just pass the id as a third parameter and it will add <i> AND \`id\`='$your_passed_id'</i> (see example below)
 
-    Query::selectWhere(
-      "employees",
-      "`email`='example@email.com' AND `password`='@123'",
-      1
-    );
+````php
+Query::selectWhere(
+  "employees",
+  "`email`='example@email.com' AND `password`='@123'",
+  1
+);
 
-    // query: SELECT * FROM employees WHERE `email`='example@email.com' AND `password`='@123' AND `id`='1'
-    // returns: data object
+// returns: data object
+````
+
+````sql
+SELECT *
+FROM employees
+WHERE `email`='example@email.com'
+  AND `password`='@123'
+  AND `id`='1'
+````
 
 ## insert
 `insert($table, $dataObject, $ignoreMode = false)`  
