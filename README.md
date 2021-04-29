@@ -15,6 +15,7 @@ Checkout different operations available:
   - [updateMultiple](#updatemultiple): update multiple rows in the table
   - [iterateOnResult](#iterateonresult): loop on selected rows from table, with empty callback
   - [truncate](#truncate): delete all rows from table
+  - [upsert](#upsert): update or insert row in table
 
 ## raw
 `raw($query)`  
@@ -222,6 +223,15 @@ To do a different operation when the data is empty, pass a empty callback as thi
 To truncate (remove all rows) from a table, use truncate()
 
     Query::truncate("users");
+
+    // returns: boolean
+
+## upsert
+`upsert($tableName, $dataObject, $whereString)`  
+
+To update or insert a row in the table, use upsert(). It internally calls the `insert()` if row doesn't exists else, it calls the `updateWhere()`.
+
+    Query::upsert("users", ["name"=>"Abdul"], "`name`='John'");
 
     // returns: boolean
 
