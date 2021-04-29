@@ -61,7 +61,7 @@ Query::rawForResult(
   WHERE e.id=12"
 );
 
-// returns: boolean or result object
+// returns: boolean || result object
 ````
 
 ````sql
@@ -133,7 +133,7 @@ $data = [
 
 Query::insert("users", $data);  
 
-// returns: boolean or integer (inserted row id)
+// returns: boolean || integer (inserted row id)
 ````
 
 ````sql
@@ -191,7 +191,7 @@ $data = [
 
 Query::replace("users", $data);  
 
-// returns: boolean or integer (inserted row id)
+// returns: boolean || integer (inserted row id)
 `````
 
 `````sql
@@ -354,7 +354,7 @@ To update or insert a row in the table, use upsert(). It internally calls the `i
 `````php
 Query::upsert("users", ["name"=>"Abdul"], "`name`='John'");
 
-// returns: boolean
+// returns: boolean || integer (inserted row id)
 `````
 
 ## Features
