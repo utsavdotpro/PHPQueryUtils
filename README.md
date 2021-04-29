@@ -22,13 +22,15 @@ Checkout different operations available:
 
 Some queries are just too complex to create objects for, just write it yourself and pass it to the raw()
 
-    Query::raw(
-      "SELECT e.*, a.level FROM employees e
-      LEFT OUTER JOIN authorization a ON a.emp_id=e.id
-      WHERE e.id=12"
-    );
+````php
+Query::raw(
+  "SELECT e.*, a.level FROM employees e
+  LEFT OUTER JOIN authorization a ON a.emp_id=e.id
+  WHERE e.id=12"
+);
 
-    // returns: boolean or data array
+// returns: boolean or data array
+````
 
 ## rawForResult
 `rawForResult($query)`  
@@ -48,10 +50,15 @@ Not for general use but in case you want the result object instead of data array
 
 Pass the name of your table and get an data object of first row. Useful when selecting from config tables
 
-    Query::select("settings");
+````php
+Query::select("settings");
 
-    // query: SELECT * FROM settings
-    // returns: data object
+// returns: data object
+````
+
+````sql
+SELECT * FROM settings
+````
 
 ## selectWhere
 `selectWhere($tableName, $whereString, $whereIdValue = null)`  
