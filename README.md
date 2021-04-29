@@ -357,6 +357,19 @@ Query::upsert("users", ["name"=>"Abdul"], "`name`='John'");
 // returns: boolean || integer (inserted row id)
 `````
 
+````sql
+/* query executed: update */
+INSERT INTO users ("name")
+VALUES ("Abdul")
+````
+
+````sql
+/* query executed: insert */
+UPDATE TABLE users
+SET `name`='Abdul'
+WHERE `name`='John'
+````
+
 ## Features
 
  - Reliable
