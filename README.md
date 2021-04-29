@@ -35,7 +35,18 @@ Query::raw(
   WHERE e.id=12"
 );
 
+
 // returns: boolean || data array
+````
+
+````sql
+/* query executed: whatever query you wrote */
+SELECT e.*,
+       a.level
+FROM employees e
+LEFT OUTER JOIN
+AUTHORIZATION a ON a.emp_id=e.id
+WHERE e.id=12
 ````
 
 ## rawForResult
@@ -53,6 +64,16 @@ Query::rawForResult(
 // returns: boolean or result object
 ````
 
+````sql
+/* query executed: whatever query you wrote */
+SELECT e.*,
+       a.level
+FROM employees e
+LEFT OUTER JOIN
+AUTHORIZATION a ON a.emp_id=e.id
+WHERE e.id=12
+````
+
 ## select
 `select($tableName)`  
 
@@ -66,7 +87,7 @@ Query::select("settings");
 
 
 ````sql
-/* query generated */
+/* query executed */
 SELECT *
 FROM settings
 WHERE 1=1
@@ -90,7 +111,7 @@ Query::selectWhere(
 ````
 
 ````sql
-/* query generated */
+/* query executed */
 SELECT *
 FROM employees
 WHERE `email`='example@email.com'
@@ -104,15 +125,22 @@ WHERE `email`='example@email.com'
 To add a new row to your table use insert(). First create your data object (see example below) and then just pass it to the function.  
 If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ignoreMode using the third parameter.
 
-    $data = [
-      "first_name" => "Abdul",
-      "last_name" => "Kalam",
-    ];
+````php
+$data = [
+  "first_name" => "Abdul",
+  "last_name" => "Kalam",
+];
 
-    Query::insert("users", $data);  
+Query::insert("users", $data);  
 
-    // query: INSERT INTO users (`first_name`, `last_name`) VALUES ('Abdul', 'Kalam')
-    // returns: boolean or integer (inserted row id)
+// returns: boolean or integer (inserted row id)
+````
+
+````sql
+/* query executed */
+INSERT INTO users (`first_name`, `last_name`)
+VALUES ('Abdul', 'Kalam')
+````
 
 ## insertMultiple
 `insertMultiple($table, $dataArray, $ignoreMode = false, $column = "", $columnId = 0)`  
@@ -121,40 +149,56 @@ To add multiple rows to your table use insertMultiple(). First create your data 
 If you want to run `INSERT IGNORE INTO` instead of `INSERT INTO`, just enable ignoreMode using the third parameter.  
 This is generally to be used to insert mappings, so if you want to pass the reference column id additionally, you can use the 4th and 5th parameters.
 
-    $data = [
-      [
-        "first_name" => "Abdul",
-        "last_name" => "Kalam",
-      ],
-      [
-        "first_name" => "C.V.",
-        "last_name" => "Raman",
-      ],
-      [
-        "first_name" => "Srinivasa",
-        "last_name" => "Ramanujan",
-      ],
-    ];
+`````php
+$data = [
+  [
+    "first_name" => "Abdul",
+    "last_name" => "Kalam",
+  ],
+  [
+    "first_name" => "C.V.",
+    "last_name" => "Raman",
+  ],
+  [
+    "first_name" => "Srinivasa",
+    "last_name" => "Ramanujan",
+  ],
+];
 
-    Query::insertMultiple("users", $data);  
+Query::insertMultiple("users", $data);  
 
-    // query: INSERT INTO users (`first_name`, `last_name`) VALUES ('Abdul', 'Kalam'), ('C.V.', 'Raman'), ('Srinivasa', 'Ramanujan)
-    // returns: boolean
+// returns: boolean
+`````
+
+`````sql
+/* query executed */
+INSERT INTO users (`first_name`, `last_name`)
+VALUES ('Abdul', 'Kalam'),
+       ('C.V.', 'Raman'),
+       ('Srinivasa', 'Ramanujan')
+`````
 
 ## replace
 `replace($table, $dataObject)`  
 
 To replace existing (or add new) row to your table, use replace()
 
-    $data = [
-      "first_name" => "Abdul",
-      "last_name" => "Kalam",
-    ];
+`````php
+$data = [
+  "first_name" => "Abdul",
+  "last_name" => "Kalam",
+];
 
-    Query::replace("users", $data);  
+Query::replace("users", $data);  
 
-    // query: REPLACE INTO users (`first_name`, `last_name`) VALUES ('Abdul', 'Kalam')
-    // returns: boolean or integer (inserted row id)
+// returns: boolean or integer (inserted row id)
+`````
+
+`````sql
+/* query executed */
+REPLACE INTO users (`first_name`, `last_name`)
+VALUES ('Abdul', 'Kalam')
+`````
 
 ## delete
 `delete($table, $whereString, $whereIdValue = null)`  
@@ -163,13 +207,22 @@ Delete the rows from the table where the condition in whereString is matched.
 You can directly separate all your conditions with whatever relation you like `AND` or `OR` . Check the example below 
 Comparing rows with id value is one of the most common use case so there's a special filter for it, just pass the id as a third parameter and it will add <i> AND \`id\`='$your_passed id'</i>
 
-    Query::delete(
-      "employees",
-      "`email`='example@email.com' AND `password`='@123'"
-    );
+`````php
+Query::delete(
+  "employees",
+  "`email`='example@email.com' AND `password`='@123'"
+);
 
-    // query: DELETE FROM employees WHERE `email`='example@email.com' AND `password`='@123'
-    // returns: boolean
+// returns: boolean
+`````
+
+`````sql
+/* query executed */
+DELETE
+FROM employees
+WHERE `email`='example@email.com'
+  AND `password`='@123'
+`````
 
 ## updateWhere
 `updateWhere($table, $dataObject, $whereString, $whereIdValue = null)`  
@@ -178,18 +231,27 @@ First create a data object and pass it to the updateWhere() and the rows from th
 You can directly separate all your conditions with whatever relation you like `AND` or `OR`   
 Comparing rows with id value is one of the most common use case so there's a special filter for it, just pass the id as a third parameter and it will add <i> AND \`id\`='$your_passed id'</i>
 
-    $data = [
-      "first_name" => "Abdul",
-      "last_name" => "Kalam",
-    ];
+`````php
+$data = [
+  "first_name" => "Abdul",
+  "last_name" => "Kalam",
+];
 
-    Query::updateWhere(
-      "users",
-      "`email`='example@email.com'"
-    );
+Query::updateWhere(
+  "users",
+  "`email`='example@email.com'"
+);
 
-    // query: UPDATE users SET `first_name`='Abdul', `last_name`='Kalam' WHERE `email`='example@email.com'
-    // returns: boolean
+// returns: boolean
+`````
+
+`````sql
+/* query executed */
+UPDATE users
+SET `first_name`='Abdul',
+    `last_name`='Kalam'
+WHERE `email`='example@email.com'
+`````
 
 ## updateMultiple
 `updateMultiple($table, $dataArray)`  
@@ -198,29 +260,40 @@ To update multiple rows in your table use updateMultiple(). First create your da
   
 **Note: for this to be able to work, your table must have at least one column with `PRIMARY` OR `UNIQUE` key and you must keep that column in the data array.**
 
+`````php
+$data = [
+  [
+    "id" => 1, // here id column has PRIMARY key
+    "first_name" => "Abdul",
+    "last_name" => "Kalam",
+  ],
+  [
+    "id" => 2,
+    "first_name" => "C.V.",
+    "last_name" => "Raman",
+  ],
+  [
+    "id" => 3,
+    "first_name" => "Srinivasa",
+    "last_name" => "Ramanujan",
+  ],
+];
 
-    $data = [
-      [
-        "id" => 1, // here id column has PRIMARY key
-        "first_name" => "Abdul",
-        "last_name" => "Kalam",
-      ],
-      [
-        "id" => 2,
-        "first_name" => "C.V.",
-        "last_name" => "Raman",
-      ],
-      [
-        "id" => 3,
-        "first_name" => "Srinivasa",
-        "last_name" => "Ramanujan",
-      ],
-    ];
+Query::updateMultiple("users", $data);  
 
-    Query::updateMultiple("users", $data);  
+// returns: boolean
+`````
 
-    // query: INSERT INTO users (`id`, `first_name`, `last_name`) VALUES (1, 'Abdul', 'Kalam'), (2, 'C.V.', 'Raman'), (3, 'Srinivasa', 'Ramanujan) ON DUPLICATE KEY UPDATE id=VALUES(id), first_name=VALUES(first_name), last_name=VALUES(last_name)
-    // returns: boolean
+`````sql
+/* query executed */
+INSERT INTO users (`id`, `first_name`, `last_name`)
+VALUES (1, 'Abdul', 'Kalam'),
+       (2, 'C.V.', 'Raman'),
+       (3, 'Srinivasa', 'Ramanujan')
+ON DUPLICATE KEY UPDATE id=VALUES(id),
+  first_name=VALUES(first_name),
+  last_name=VALUES(last_name)
+`````
 
 > We're using multi INSERT query here in the UPDATE mode so basically, if a column exists, it will be updated. And if it doesn't exists, it will be created.  
 > So be sure that you only pass the column that already exist in the table until unless you **knowingly** don't want to.
@@ -233,36 +306,56 @@ Pass whatever SELECT query you like and start working on them in the callback
 Data objects returned inside the parameter has two extra properties `numRows` (total number of rows available) and `hasNext` (if has more data in the list)   
 To do a different operation when the data is empty, pass a empty callback as third parameter (see example below) 
 
-    Query::iterateOnResult(
-      "SELECT e.*, a.level FROM employees e
-      LEFT OUTER JOIN authorization a ON a.emp_id=e.id",
-      function ($dataRow) {
-        // do something with dataRow
-      },
-      function () {
-        // show message like there's no data in the table
-      }
-    );
+`````php
+Query::iterateOnResult(
+  "SELECT e.*, a.level FROM employees e
+  LEFT OUTER JOIN authorization a ON a.emp_id=e.id",
+  function ($dataRow) {
+    // do something with dataRow
+  },
+  function () {
+    // show message like there's no data in the table
+  }
+);
 
-    // returns: void
+// returns: void
+`````
+
+````sql
+/* query executed: whatever query you wrote */
+SELECT e.*,
+       a.level
+FROM employees e
+LEFT OUTER JOIN
+AUTHORIZATION a ON a.emp_id=e.id
+````
 
 ## truncate
 `truncate($tableName)`  
 
 To truncate (remove all rows) from a table, use truncate()
 
-    Query::truncate("users");
+`````php
+Query::truncate("users");
 
-    // returns: boolean
+// returns: boolean
+`````
+
+````sql
+/* query executed */
+TRUNCATE TABLE users;
+````
 
 ## upsert
 `upsert($tableName, $dataObject, $whereString)`  
 
 To update or insert a row in the table, use upsert(). It internally calls the `insert()` if row doesn't exists else, it calls the `updateWhere()`.
 
-    Query::upsert("users", ["name"=>"Abdul"], "`name`='John'");
+`````php
+Query::upsert("users", ["name"=>"Abdul"], "`name`='John'");
 
-    // returns: boolean
+// returns: boolean
+`````
 
 ## Features
 
@@ -277,3 +370,5 @@ Want to contribute? Great fork this repo and create a pull request if you
 - found any error
 - want to add a new function
 - upgraded an existing function
+
+## Credits
