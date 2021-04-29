@@ -66,6 +66,7 @@ Query::select("settings");
 
 
 ````sql
+/* query generated */
 SELECT *
 FROM settings
 WHERE 1=1
@@ -89,6 +90,7 @@ Query::selectWhere(
 ````
 
 ````sql
+/* query generated */
 SELECT *
 FROM employees
 WHERE `email`='example@email.com'
