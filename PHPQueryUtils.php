@@ -294,4 +294,11 @@ class Query {
   public static function truncate($table) {
     return (bool) Query::raw("TRUNCATE TABLE $table");
   }
+
+  public static function upsert($table, $dataObj, $where) {
+    if (Query::selectWhere($table, $where))
+      return Query::updateWhere($table, $dataObj, $where);
+
+    return Query::insert($table, $dataObj);
+  }
 }
