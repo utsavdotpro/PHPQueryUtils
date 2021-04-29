@@ -385,3 +385,5 @@ Want to contribute? Great fork this repo and create a pull request if you
 - upgraded an existing function
 
 ## Credits
+- [KNEX.JS](https://knexjs.org/) (Inspiration)
+- SQL Formatter: https://sqlformat.org/
