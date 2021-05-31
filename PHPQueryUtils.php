@@ -75,7 +75,7 @@ class Query {
       $value .= "";
       if (strlen($value) <= 0) {
         $insertQuery .= "'',";
-      } else if ($value[0] == '(' || $value[strlen($value) - 1] == ')') {
+      } else if ($value[0] == '(' && $value[strlen($value) - 1] == ')') {
         $insertQuery .= "$value,";
       } else {
         $insertQuery .= "'$value',";
